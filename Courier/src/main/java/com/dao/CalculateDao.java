@@ -19,7 +19,7 @@ public class CalculateDao {
 	private static final String INSERT_TRANSACTIONS_SQL = "INSERT INTO courier" + "  (customer_name, mobile,fromCity,toCity,weight,price,shipmentDate,deliveryDate) VALUES "
 			+ " (?, ?, ?,?,?,?,?,?);";
 	
-	private static final String SELECT_ALL_TRANSACTIONS = "select * from courier;";
+	private static final String SELECT_ALL_TRANSACTIONS = "select * from courier where mobile = ?;";
 	private static final String DELETE_TRANSACTIONS_SQL = "delete from courier where id = ?;";
 	
 	double price = 0.0;
@@ -142,7 +142,7 @@ public class CalculateDao {
 		return r;
 	}
 	
-	public List<CourierDetails> selectAllTransactions() {
+	public List<CourierDetails> selectAllTransactions(String  mobilee) {
 		// using try-with-resources to avoid closing resources (boiler plate code)
 		List<CourierDetails> courierDetails = new ArrayList<>();
 		// Step 1: Establishing a Connection
@@ -151,6 +151,8 @@ public class CalculateDao {
 			PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_TRANSACTIONS);) {
 			System.out.println(preparedStatement);
 			// Step 3: Execute the query or update query
+			preparedStatement.setString(1, mobilee);
+
 			ResultSet rs = preparedStatement.executeQuery();
 			// Step 4: Process the ResultSet object.
 			while (rs.next()) {

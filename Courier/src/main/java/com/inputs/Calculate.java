@@ -29,8 +29,9 @@ public class Calculate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
-		
+		HttpSession session = request.getSession();
+
+		session.removeAttribute("mobile");
 		
 		String username =request.getParameter("data-username");
 		String fromCity=(request.getParameter("data-fromCity"));
@@ -54,10 +55,15 @@ public class Calculate extends HttpServlet {
 		
 		
 		try {
+			
+			session.setAttribute("mobile", mobile);
 			calculateDao.calculateDateAndPrice(courierDetails);
 			calculateDao.insertTransaction(courierDetails);
-
-			List<CourierDetails> courierDetailsList=calculateDao.selectAllTransactions();
+			
+			
+			
+			List<CourierDetails> courierDetailsList=calculateDao.selectAllTransactions(courierDetails.getMobile());
+			
 			request.setAttribute("courierDetailsList", courierDetailsList);
 
 			response.sendRedirect("output.jsp");

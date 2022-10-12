@@ -61,7 +61,8 @@ th, td {
 				
 				<%
 				CalculateDao calculateDao = new CalculateDao(); 
-			List<CourierDetails> list = calculateDao.selectAllTransactions();
+				String mobile = (String)session.getAttribute("mobile"); 
+				List<CourierDetails> list = calculateDao.selectAllTransactions(mobile);
 				for (CourierDetails courierDetails : list) {
 					%>
 					<tr>
